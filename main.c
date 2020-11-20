@@ -18,9 +18,7 @@ int main() {
   printf("\nStatistics For Directory: %s\n\n", entry->d_name);
 
   // Go through and check for directories.
-  printf(LINE);
-  printf("Directories:\n");
-  printf(LINE);
+  printf("%sDirectories:\n%s", LINE, LINE);
   while (entry!=NULL) {
     stat(entry->d_name, &sb);
     if (S_ISDIR(sb.st_mode)) {
@@ -34,9 +32,7 @@ int main() {
   closedir(d);
 
   // Go through once again and check for regular files.
-  printf(LINE);
-  printf("Regular Files:\n");
-  printf(LINE);
+  printf("%sRegular Files:\n%s", LINE, LINE);
   d = opendir(".");
   entry = readdir(d);
   while (entry!=NULL) {
@@ -56,9 +52,7 @@ int main() {
   float kb = (double) sum / 1000;
   float mb = (double) sum / 1000000;
   float gb = (double) sum / 1000000000;
-  printf(LINE);
-  printf("Total Directory Size:\n");
-  printf(LINE);
+  printf("%sTotal Directory Size:\n%s", LINE, LINE);
   printf("\t%d Bytes\n\t%f KB\n\t%f MB\n\t%f GB\n", sum, kb, mb, gb);
 
   return 0;
