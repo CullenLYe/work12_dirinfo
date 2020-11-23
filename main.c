@@ -4,18 +4,30 @@
 #include <time.h>
 #include <dirent.h>
 #include <string.h>
+#include <errno.h>
 
 #define LINE "--------------------------------------------\n"
 
-DIR *d;
 struct dirent *entry;
 struct stat sb;
 int sum;
+char *direc;
+DIR *d;
 
-int main() {
-  d = opendir(".");
+int main(int argc, char **argv) {
+  if (argc>1) direc = argv[1];
+  else {
+    printf("Please enter a directory: ");
+    direc = malloc(100);
+    scanf("%s", direc);
+  }
+  d = opendir(direc);
+  if (!d) {
+    printf("errno: %d\terror: %s\n", errno, strerror(errno));
+    exit(0);
+  }
   entry = readdir(d);
-  printf("\nStatistics For Directory: %s\n\n", entry->d_name);
+  printf("\nStatistics For Directory: %s\n\n", direc);
 
   // Go through and check for directories.
   printf("%sDirectories:\n%s", LINE, LINE);
@@ -33,7 +45,7 @@ int main() {
 
   // Go through once again and check for regular files.
   printf("%sRegular Files:\n%s", LINE, LINE);
-  d = opendir(".");
+  d = opendir(direc);
   entry = readdir(d);
   while (entry!=NULL) {
     stat(entry->d_name, &sb);
